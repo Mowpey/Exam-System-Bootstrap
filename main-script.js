@@ -15,3 +15,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const editButton = document.querySelector(".btn-info");
+  const deleteColumnCells = document.querySelectorAll(".delete-column");
+
+  editButton.addEventListener("click", function () {
+    deleteColumnCells.forEach((cell) => {
+      if (cell.style.display === "none" || cell.style.display === "") {
+        cell.style.display = "table-cell";
+      } else {
+        cell.style.display = "none";
+      }
+    });
+  });
+});
