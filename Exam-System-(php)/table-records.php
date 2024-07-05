@@ -20,25 +20,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="main-script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const dataFromDatabase = <?php echo json_encode($dataFromDatabase); ?>;
-            function insertFilename() {
-                dataFromDatabase.forEach(applicant => {
-                    const filenameTd = document.querySelector(`#filename-${applicant.id}`);
-                    if (filenameTd) { 
-                        const a = document.createElement('a');
-                        a.href = "data:application/pdf;base64," + applicant.applicant_form;
-                        a.download = applicant.applicant_form_filename;
-                        a.textContent = applicant.applicant_form_filename;
-                        filenameTd.appendChild(a);
-                    }
-                });
-            }
-            insertFilename();
-        });
-    </script>
-
     <style>
       .sticky-id {
         position: sticky;
@@ -62,9 +43,12 @@
     </style>
   </head>
   <body>
+
     <?php include_once('first-connection.php'); ?>
     <?php include('fetching-data.php');?>
-    <?php include('convert-blob.php');?>
+    <?php include('fetch-scores.php')?>
+    
+  
 
     <nav class="navbar bg-body-tertiary fixed-top">
       <div class="container-fluid">
@@ -365,144 +349,46 @@
             </tr>
           </thead>
 
-          <tbody>
-          <?php foreach ($applicant_detail as $applicant): ?>
-            <tr>
-              <td class="delete-column">
-                <button type="button" class="btn btn-danger">Delete</button>
-              </td>
-              <td class="sticky-id"><?= $applicant['applicantID'] ?></td>
-              <td class="sticky-name"><?= $applicant['name'] ?></td>
-              <td><?= $applicant['sex'] ?></td>
-              <td><?= $applicant['province'] ?></td>
-              <td><?= $applicant['date_of_examination'] ?></td>
-              <td><?= $applicant['exam_venue'] ?></td>
-              <td><?= $applicant['date_of_notification'] ?></td>
-              <td>85</td>
-              <td>90</td>
-              <td>95</td>
-              <td>270</td>
-              <td><?= $applicant['proctor'] ?></td>
-              <td><?= $applicant['status'] ?></td>
-              <td><a href="#"><?= $applicant['email_address'] ?></a></td>
-              <td><?= $applicant['contact_number'] ?></td>
-              <td id="filename-<?= $applicant['applicantID'] ?>"></td>
-            </tr>
-            <?php endforeach;?>
-
-
-
-
-
-            <tr>
-              <td class="delete-column">
-                <button type="button" class="btn btn-danger">Delete</button>
-              </td>
-              <td class="sticky-id">2</td>
-              <td class="sticky-name">Jane Roe</td>
-              <td>F</td>
-              <td>New York</td>
-              <td>2024-06-24</td>
-              <td>New York City</td>
-              <td>2024-06-29</td>
-              <td>88</td>
-              <td>92</td>
-              <td>90</td>
-              <td>270</td>
-              <td>Mike Johnson</td>
-              <td>Failed</td>
-              <td>janeroe12@gmail.com</td>
-              <td>09456433214</td>
-              <td><a href="#">Form 2</a></td>
-            </tr>
-            <tr>
-              <td class="delete-column">
-                <button type="button" class="btn btn-danger">Delete</button>
-              </td>
-              <td class="sticky-id">3</td>
-              <td class="sticky-name">Robert Brown</td>
-              <td>M</td>
-              <td>Texas</td>
-              <td>2024-06-26</td>
-              <td>Houston</td>
-              <td>2024-07-01</td>
-              <td>82</td>
-              <td>85</td>
-              <td>87</td>
-              <td>254</td>
-              <td>Sarah Lee</td>
-              <td>Pending</td>
-              <td>robertbrown@example.com</td>
-              <td>09876543210</td>
-              <td><a href="#">Form 3</a></td>
-            </tr>
-            <tr>
-              <td class="delete-column">
-                <button type="button" class="btn btn-danger">Delete</button>
-              </td>
-              <td class="sticky-id">4</td>
-              <td class="sticky-name">Emily White</td>
-              <td>F</td>
-              <td>Florida</td>
-              <td>2024-06-27</td>
-              <td>Miami</td>
-              <td>2024-07-02</td>
-              <td>95</td>
-              <td>97</td>
-              <td>93</td>
-              <td>285</td>
-              <td>David Green</td>
-              <td>Passed</td>
-              <td>emilywhite56@gmail.com</td>
-              <td>09876543210</td>
-              <td><a href="#">Form 4</a></td>
-            </tr>
-            <tr>
-              <td class="delete-column">
-                <button type="button" class="btn btn-danger">Delete</button>
-              </td>
-              <td class="sticky-id">5</td>
-              <td class="sticky-name">Michael Blue</td>
-              <td>M</td>
-              <td>Illinois</td>
-              <td>2024-06-28</td>
-              <td>Chicago</td>
-              <td>2024-07-03</td>
-              <td>78</td>
-              <td>80</td>
-              <td>82</td>
-              <td>240</td>
-              <td>Laura Brown</td>
-              <td>Failed</td>
-              <td>emilywhite56@gmail.com</td>
-              <td>09876543210</td>
-              <td><a href="#">Form 5</a></td>
-            </tr>
-            <tr>
-              <td class="delete-column">
-                <button type="button" class="btn btn-danger">Delete</button>
-              </td>
-              <td class="sticky-id">6</td>
-              <td class="sticky-name">Alice Black</td>
-              <td>F</td>
-              <td>Ohio</td>
-              <td>2024-06-29</td>
-              <td>Columbus</td>
-              <td>2024-07-04</td>
-              <td>92</td>
-              <td>94</td>
-              <td>96</td>
-              <td>282</td>
-              <td>Brian White</td>
-              <td>Pending</td>
-              <td>aliceblack@example.com</td>
-              <td>09456431234</td>
-              <td><a href="#">Form 6</a></td>
-            </tr>
-          </tbody>
+        <tbody id="applicant-table-body">
+            <?php if (!empty($applicant_detail)): ?>
+                <?php foreach ($applicant_detail as $applicant): ?>
+                <tr>
+                    <td class="delete-column">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </td>
+                    <td class="sticky-id"><?= htmlspecialchars($applicant['applicantID']) ?></td>
+                    <td class="sticky-name"><?= htmlspecialchars($applicant['name']) ?></td>
+                    <td><?= htmlspecialchars($applicant['sex']) ?></td>
+                    <td><?= htmlspecialchars($applicant['province']) ?></td>
+                    <td><?= htmlspecialchars($applicant['date_of_examination']) ?></td>
+                    <td><?= htmlspecialchars($applicant['exam_venue']) ?></td>
+                    <td><?= htmlspecialchars($applicant['date_of_notification']) ?></td>
+                      <?php if (isset($scores[$applicant['applicantID']])): ?>
+                          <?php $score = $scores[$applicant['applicantID']]; ?>
+                          <td><?= htmlspecialchars($score['score1']) ?></td>
+                          <td><?= htmlspecialchars($score['score2']) ?></td>
+                          <td><?= htmlspecialchars($score['score3']) ?></td>
+                          <td><?= htmlspecialchars($score['total']) ?></td>
+                      <?php else: ?>
+                          <td colspan="4">No scores found</td>
+                      <?php endif; ?>
+                    <td><?= htmlspecialchars($applicant['proctor']) ?></td>
+                    <td><?= htmlspecialchars($applicant['status']) ?></td>
+                    <td><a href="mailto:<?= htmlspecialchars($applicant['email_address']) ?>"><?= htmlspecialchars($applicant['email_address']) ?></a></td>
+                    <td><?= htmlspecialchars($applicant['contact_number']) ?></td>
+                    <td><a target="_blank"   href="applicant-form.php?id=<?= $applicant['applicantID'] ?>">Download File</a></td>
+                </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="17">No records found.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
         </table>
       </div>
       <button type="button" class="btn btn-success">Save</button>
     </div>
+    
   </body>
 </html>
