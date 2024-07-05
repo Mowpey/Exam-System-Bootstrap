@@ -31,3 +31,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('input[name="sortName"]').forEach((radio) => {
+    radio.addEventListener("change", () => {
+      document.getElementById("filterForm").submit();
+    });
+  });
+});

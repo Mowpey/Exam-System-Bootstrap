@@ -41,12 +41,17 @@
         margin-top: 4.5rem;
       }
     </style>
+
   </head>
   <body>
 
     <?php include_once('first-connection.php'); ?>
     <?php include('fetching-data.php');?>
     <?php include('fetch-scores.php')?>
+    <?php include('search-function.php')?>
+    <?php include('filter-name.php')?>
+   
+   
     
   
 
@@ -80,43 +85,42 @@
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <!-- Name -->
-              <li class="nav-item mb-3">
-                <span class="fw-bold">Name</span>
-                <ul class="list-group mt-2">
-                  <!-- Added mt-2 (margin-top) class here -->
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortName"
-                      value="asc"
-                      id="firstNameRadio"
-                    />
-                    <label class="form-check-label" for="firstNameRadio"
-                      >Sort Name (A-Z)</label
-                    >
-                  </li>
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortName"
-                      value="desc"
-                      id="secondNameRadio"
-                    />
-                    <label class="form-check-label" for="secondNameRadio"
-                      >Sort Name (Z-A)</label
-                    >
-                  </li>
-                </ul>
-              </li>
+              <!--Function to Search Name-->
+                <form id="filterForm" method="GET" action="">
+                    <li class="nav-item mb-3">
+                        <span class="fw-bold">Name</span>
+                        <ul class="list-group mt-2">
+                            <li class="list-group-item">
+                                <input
+                                    class="form-check-input me-1"
+                                    type="radio"
+                                    name="sortName"
+                                    value="asc"
+                                    id="firstNameRadio"
+                                    <?php if($sortOrder === 'ASC') echo 'checked'; ?>
+                                />
+                                <label class="form-check-label" for="firstNameRadio">Sort Name (A-Z)</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input
+                                    class="form-check-input me-1"
+                                    type="radio"
+                                    name="sortName"
+                                    value="desc"
+                                    id="secondNameRadio"
+                                    <?php if($sortOrder === 'DESC') echo 'checked'; ?>
+                                />
+                                <label class="form-check-label" for="secondNameRadio">Sort Name (Z-A)</label>
+                            </li>
+                        </ul>
+                    </li>
+                </form>
 
-              <!-- ID -->
+              
               <li class="nav-item mb-3">
                 <span class="fw-bold">ID</span>
                 <ul class="list-group mt-2">
-                  <!-- Added mt-2 (margin-top) class here -->
+                  
                   <li class="list-group-item">
                     <input
                       class="form-check-input me-1"
@@ -293,13 +297,9 @@
     </div>
     <div class="container my-3">
       <div class="d-flex justify-content-between">
-        <form class="d-flex" role="search">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-          />
+        <form class="d-flex" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+              <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         <div >
           <button type="button" class="btn btn-primary mx-1">Add</button>
@@ -349,20 +349,21 @@
             </tr>
           </thead>
 
-        <tbody id="applicant-table-body">
-            <?php if (!empty($applicant_detail)): ?>
-                <?php foreach ($applicant_detail as $applicant): ?>
-                <tr>
-                    <td class="delete-column">
-                        <button type="button" class="btn btn-danger">Delete</button>
-                    </td>
-                    <td class="sticky-id"><?= htmlspecialchars($applicant['applicantID']) ?></td>
-                    <td class="sticky-name"><?= htmlspecialchars($applicant['name']) ?></td>
-                    <td><?= htmlspecialchars($applicant['sex']) ?></td>
-                    <td><?= htmlspecialchars($applicant['province']) ?></td>
-                    <td><?= htmlspecialchars($applicant['date_of_examination']) ?></td>
-                    <td><?= htmlspecialchars($applicant['exam_venue']) ?></td>
-                    <td><?= htmlspecialchars($applicant['date_of_notification']) ?></td>
+      <tbody id="applicant-table-body">
+          <?php if (!empty($applicant_record)): ?>
+              <?php foreach ($applicant_record as $applicant): ?>
+                  <tr>
+                      <td class="delete-column">
+                          <button type="button" class="btn btn-danger">Delete</button>
+                      </td>
+                      <td class="sticky-id"><?= htmlspecialchars($applicant['applicantID']) ?></td>
+                      <td class="sticky-name"><?= htmlspecialchars($applicant['name']) ?></td>
+                      <td><?= htmlspecialchars($applicant['sex']) ?></td>
+                      <td><?= htmlspecialchars($applicant['province']) ?></td>
+                      <td><?= htmlspecialchars($applicant['date_of_examination']) ?></td>
+                      <td><?= htmlspecialchars($applicant['exam_venue']) ?></td>
+                      <td><?= htmlspecialchars($applicant['date_of_notification']) ?></td>
+                      
                       <?php if (isset($scores[$applicant['applicantID']])): ?>
                           <?php $score = $scores[$applicant['applicantID']]; ?>
                           <td><?= htmlspecialchars($score['score1']) ?></td>
@@ -372,19 +373,20 @@
                       <?php else: ?>
                           <td colspan="4">No scores found</td>
                       <?php endif; ?>
-                    <td><?= htmlspecialchars($applicant['proctor']) ?></td>
-                    <td><?= htmlspecialchars($applicant['status']) ?></td>
-                    <td><a href="mailto:<?= htmlspecialchars($applicant['email_address']) ?>"><?= htmlspecialchars($applicant['email_address']) ?></a></td>
-                    <td><?= htmlspecialchars($applicant['contact_number']) ?></td>
-                    <td><a target="_blank"   href="applicant-form.php?id=<?= $applicant['applicantID'] ?>">Download File</a></td>
-                </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="17">No records found.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
+                      
+                      <td><?= htmlspecialchars($applicant['proctor']) ?></td>
+                      <td><?= htmlspecialchars($applicant['status']) ?></td>
+                      <td><a href="mailto:<?= htmlspecialchars($applicant['email_address']) ?>"><?= htmlspecialchars($applicant['email_address']) ?></a></td>
+                      <td><?= htmlspecialchars($applicant['contact_number']) ?></td>
+                      <td><a target="_blank" href="applicant-form.php?id=<?= $applicant['applicantID'] ?>">Attachment</a></td>
+                  </tr>
+              <?php endforeach; ?>
+          <?php else: ?>
+              <tr>
+                  <td colspan="17">No records found.</td>
+              </tr>
+          <?php endif; ?>
+      </tbody>
         </table>
       </div>
       <button type="button" class="btn btn-success">Save</button>
