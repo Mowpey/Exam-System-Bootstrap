@@ -39,7 +39,7 @@
           }
 
           .sticky-name {
-            left: 8.2rem;
+            left: 8.1rem;
             font-weight: 700;
           }
         }
@@ -82,249 +82,70 @@
   <body>
 
     <?php include_once('first-connection.php'); ?>
-    <?php include('fetching-data.php');?>
     <?php include('fetch-scores.php');?>
     <?php include('filter-search.php');?>
    
 
-    <nav class="navbar bg-body-tertiary fixed-top">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#"></a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasNavbar"
-          aria-controls="offcanvasNavbar"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="offcanvas offcanvas-end"
-          tabindex="-1"
-          id="offcanvasNavbar"
-          aria-labelledby="offcanvasNavbarLabel"
-        >
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-              <!--Function to Filter Name-->
-              <form id="filterForm" method="GET" action="">
-                    <li class="nav-item mb-3">
-                        <span class="fw-bold">Name</span>
-                        <ul class="list-group mt-2">
-                            <li class="list-group-item">
-                                <input
-                                    class="form-check-input me-1"
-                                    type="radio"
-                                    name="sortName"
-                                    value="asc"
-                                    id="firstNameRadio"
-                                    <?php if($sortOrder === 'ASC') echo 'checked'; ?>
-                                />
-                                <label class="form-check-label" for="firstNameRadio">Sort Name (A-Z)</label>
-                            </li>
-                            <li class="list-group-item">
-                                <input
-                                    class="form-check-input me-1"
-                                    type="radio"
-                                    name="sortName"
-                                    value="desc"
-                                    id="secondNameRadio"
-                                    <?php if($sortOrder === 'DESC') echo 'checked'; ?>
-                                />
-                                <label class="form-check-label" for="secondNameRadio">Sort Name (Z-A)</label>
-                            </li>
-                        </ul>
-                    </li>
-                </form>
+      <nav class="navbar bg-body-tertiary fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasNavbar"
+            aria-controls="offcanvasNavbar"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="offcanvas offcanvas-end"
+            tabindex="-1"
+            id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel"
+          >
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="offcanvas-body">
+            <form id="nameFilterForm" action="" method="GET">
+              <div class="mb-3">
+                <span class="fw-bold">Name</span>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDesc" name="sortName" value="desc" <?php echo isset($_GET['sortName']) && $_GET['sortName'] === 'desc' ? 'checked' : ''; ?>>
+                  <label class="form-check-label" for="flexSwitchCheckDesc">Sort Name (Z to A) <i class="bi bi-arrow-down"></i></label>
+                </div>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckAsc" name="sortName" value="asc" <?php echo isset($_GET['sortName']) && $_GET['sortName'] === 'asc' ? 'checked' : ''; ?>>
+                  <label class="form-check-label" for="flexSwitchCheckAsc">Sort Name (A to Z) <i class="bi bi-arrow-up"></i></label>
+                </div>
+              </div>
+            </form>
+
+        <form id="idFilterForm" action="" method="GET">
+            <div class="mb-3">
+              <span class="fw-bold">ID</span>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckOldest" name="sortID" value="oldest" <?php echo isset($_GET['sortID']) && $_GET['sortID'] === 'oldest' ? 'checked' : ''; ?>>
+                <label class="form-check-label" for="flexSwitchCheckOldest">Oldest ID <i class="bi bi-arrow-down"></i></label>
+              </div>
+            </div>
+        </form>
 
 
-              
-              <li class="nav-item mb-3">
-                <span class="fw-bold">ID</span>
-                <ul class="list-group mt-2">
-                  
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortID"
-                      value="oldest"
-                      id="firstIDRadio"
-                    />
-                    <label class="form-check-label" for="firstIDRadio"
-                      >Oldest ID <i class="bi bi-arrow-down"></i
-                    ></label>
-                  </li>
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortID"
-                      value="newest"
-                      id="secondIDRadio"
-                    />
-                    <label class="form-check-label" for="secondIDRadio"
-                      >Newest ID <i class="bi bi-arrow-up"></i
-                    ></label>
-                  </li>
-                </ul>
-              </li>
 
-              <!-- Province -->
-              <li class="nav-item mb-3">
-                <span class="fw-bold">Province</span>
-                <ul class="list-group mt-2">
-                  <!-- Added mt-2 (margin-top) class here -->
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortProvince"
-                      value="asc"
-                      id="firstProvinceRadio"
-                    />
-                    <label class="form-check-label" for="firstProvinceRadio"
-                      >Sort Province (A-Z)</label
-                    >
-                  </li>
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortProvince"
-                      value="desc"
-                      id="secondProvinceRadio"
-                    />
-                    <label class="form-check-label" for="secondProvinceRadio"
-                      >Sort Province (Z-A)</label
-                    >
-                  </li>
-                </ul>
-              </li>
-
-              <!-- Date of Examination -->
-              <li class="nav-item mb-3">
-                <span class="fw-bold">Date of Examination</span>
-                <ul class="list-group mt-2">
-                  <!-- Added mt-2 (margin-top) class here -->
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortDate"
-                      value="oldest"
-                      id="firstDateRadio"
-                    />
-                    <label class="form-check-label" for="firstDateRadio"
-                      >Oldest Date <i class="bi bi-arrow-down"></i
-                    ></label>
-                  </li>
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortDate"
-                      value="newest"
-                      id="secondDateRadio"
-                    />
-                    <label class="form-check-label" for="secondDateRadio"
-                      >Newest Date <i class="bi bi-arrow-up"></i
-                    ></label>
-                  </li>
-                </ul>
-              </li>
-
-              <!-- Score -->
-              <li class="nav-item mb-3">
-                <span class="fw-bold">Score</span>
-                <ul class="list-group mt-2">
-                  <!-- Added mt-2 (margin-top) class here -->
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortScore"
-                      value="lowest"
-                      id="firstScoreRadio"
-                    />
-                    <label class="form-check-label" for="firstScoreRadio"
-                      >Lowest Total Score <i class="bi bi-arrow-down"></i
-                    ></label>
-                  </li>
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortScore"
-                      value="highest"
-                      id="secondScoreRadio"
-                    />
-                    <label class="form-check-label" for="secondScoreRadio"
-                      >Highest Total Score <i class="bi bi-arrow-up"></i
-                    ></label>
-                  </li>
-                </ul>
-              </li>
-
-              <!-- Status -->
-              <li class="nav-item mb-3">
-                <span class="fw-bold">Status</span>
-                <ul class="list-group mt-2">
-                  <!-- Added mt-2 (margin-top) class here -->
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortStatus"
-                      value="passed"
-                      id="passedRadio"
-                    />
-                    <label class="form-check-label" for="passedRadio"
-                      >Passed</label
-                    >
-                  </li>
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortStatus"
-                      value="failed"
-                      id="failedRadio"
-                    />
-                    <label class="form-check-label" for="failedRadio"
-                      >Failed</label
-                    >
-                  </li>
-                  <li class="list-group-item">
-                    <input
-                      class="form-check-input me-1"
-                      type="radio"
-                      name="sortStatus"
-                      value="pending"
-                      id="pendingRadio"
-                    />
-                    <label class="form-check-label" for="pendingRadio"
-                      >Pending</label
-                    >
-                  </li>
-                </ul>
-              </li>
-            </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
     <div class="container" id="header">
       <h1>Applicant Records</h1>
     </div>

@@ -1,34 +1,5 @@
 <?php
 
-// $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $database = "applicant-records";
-// $connection = mysqli_connect($servername, $username, $password, $database);
-
-// if (!$connection) {
-//     die("Connection failed: " . mysqli_connect_error());
-// }
-
-// $sortOrder = isset($_GET['sortName']) ? $_GET['sortName'] : 'asc';
-// $sortOrder = ($sortOrder === 'desc') ? 'DESC' : 'ASC';
-// $query = "SELECT * FROM applicantrecord ORDER BY name $sortOrder";
-
-// if (isset($_GET['search'])) {
-//     $search = trim($_GET['search']);
-//     $query = "SELECT * FROM applicantrecord 
-//               WHERE status LIKE '%$search%' 
-//               OR applicantID LIKE '%$search%' 
-//               OR name LIKE '%$search%' 
-//               OR province LIKE '%$search%'
-//               ORDER BY name $sortOrder";
-// }
-
-// $result = mysqli_query($connection, $query);
-// $applicant_record = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-// mysqli_close($connection);
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -39,21 +10,41 @@ if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$sortOrder = isset($_GET['sortName']) ? $_GET['sortName'] : 'asc';
-$sortOrder = ($sortOrder === 'desc') ? 'DESC' : 'ASC';
-$query = "SELECT * FROM applicantrecord ORDER BY name $sortOrder";
+$sortIDOrder = isset($_GET['sortID']) && $_GET['sortID'] === 'oldest' ? 'ASC' : 'DESC'; 
+
+$query = "SELECT * FROM applicantrecord";
 
 if (isset($_GET['search'])) {
     $search = trim($_GET['search']);
-    $query = "SELECT * FROM applicantrecord 
-              WHERE status LIKE '%$search%' 
-              OR applicantID LIKE '%$search%' 
-              OR name LIKE '%$search%' 
-              OR province LIKE '%$search%'
-              ORDER BY name $sortOrder";
+    $query .= " WHERE status LIKE '%$search%' 
+                OR applicantID LIKE '%$search%' 
+                OR name LIKE '%$search%' 
+                OR province LIKE '%$search%'";
 }
 
-$result = mysqli_query($connection, $query);
-$applicant_record = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$orderByClause = [];
 
+if (isset($_GET['sortName'])) {
+    $sortNameOrder = $_GET['sortName'] === 'desc' ? 'DESC' : 'ASC';
+    $orderByClause[] = "name $sortNameOrder";
+}
+
+if (isset($_GET['sortID']) && $_GET['sortID'] === 'oldest') {
+    $orderByClause[] = "applicantID ASC";
+} else {
+    $orderByClause[] = "applicantID $sortIDOrder"; 
+}
+
+$query .= " ORDER BY " . implode(', ', $orderByClause);
+
+$result = mysqli_query($connection, $query);
+
+if ($result) {
+    $applicant_record = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    echo "Error: " . mysqli_error($connection);
+}
 mysqli_close($connection);
+
+
+

@@ -17,9 +17,44 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll('input[name="sortName"]').forEach((radio) => {
-    radio.addEventListener("change", () => {
-      document.getElementById("filterForm").submit();
-    });
+  const descCheckbox = document.getElementById("flexSwitchCheckDesc");
+  const ascCheckbox = document.getElementById("flexSwitchCheckAsc");
+
+  descCheckbox.addEventListener("change", function (event) {
+    event.preventDefault();
+    if (this.checked) {
+      ascCheckbox.checked = false;
+      document.getElementById("nameFilterForm").sortName.value = "desc";
+      document.getElementById("nameFilterForm").submit();
+    } else {
+      document.getElementById("nameFilterForm").submit();
+    }
+  });
+
+  ascCheckbox.addEventListener("change", function (event) {
+    event.preventDefault();
+    if (this.checked) {
+      descCheckbox.checked = false;
+      document.getElementById("nameFilterForm").sortName.value = "asc";
+      document.getElementById("nameFilterForm").submit();
+    } else {
+      document.getElementById("nameFilterForm").submit();
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const oldestCheckbox = document.getElementById("flexSwitchCheckOldest");
+
+  oldestCheckbox.addEventListener("change", function () {
+    const form = document.getElementById("idFilterForm");
+    const url = new URL(window.location.href);
+    if (this.checked) {
+      url.searchParams.set("sortID", "oldest");
+    } else {
+      url.searchParams.delete("sortID");
+    }
+    form.action = url.toString();
+    form.submit();
   });
 });
