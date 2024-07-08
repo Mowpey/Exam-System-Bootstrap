@@ -1,8 +1,5 @@
-<<<<<<< Updated upstream
-=======
 //Apply the colors in respective status
 
->>>>>>> Stashed changes
 document.addEventListener("DOMContentLoaded", function () {
   const statusCells = document.querySelectorAll(
     ".table.table-hover tbody tr td:nth-last-of-type(4)"
@@ -21,10 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-<<<<<<< Updated upstream
-=======
 //Listen to the toggle of name filter
->>>>>>> Stashed changes
 document.addEventListener("DOMContentLoaded", function () {
   const descCheckbox = document.getElementById("flexSwitchCheckDesc");
   const ascCheckbox = document.getElementById("flexSwitchCheckAsc");
@@ -52,10 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-<<<<<<< Updated upstream
-=======
 //Listen to the toggle of ID filter
->>>>>>> Stashed changes
 document.addEventListener("DOMContentLoaded", function () {
   const oldestCheckbox = document.getElementById("flexSwitchCheckOldest");
 
@@ -72,11 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+//Listen to the date filter exam inputs
 $(function () {
-<<<<<<< Updated upstream
-=======
-  //Listen to the date filter exam inputs
->>>>>>> Stashed changes
   $('input[name="datefilter_examination"]').daterangepicker({
     autoUpdateInput: false,
     locale: {
@@ -138,11 +126,7 @@ $(function () {
       start.format("MM/DD/YYYY") + " - " + end.format("MM/DD/YYYY")
     );
   }
-<<<<<<< Updated upstream
-
-=======
   //Listen to the date filter notification inputs
->>>>>>> Stashed changes
   $('input[name="datefilter_notification"]').daterangepicker({
     autoUpdateInput: false,
     locale: {
@@ -225,9 +209,8 @@ $(function () {
     }
   });
 });
-<<<<<<< Updated upstream
-=======
 
+//Listen to the submit of date filters
 document.addEventListener("DOMContentLoaded", function () {
   let formChanged = false;
   const statusForm = document.getElementById("statusForm");
@@ -324,4 +307,43 @@ document.addEventListener("DOMContentLoaded", function () {
     if (checkbox) checkbox.checked = true;
   });
 });
->>>>>>> Stashed changes
+
+//Dropdown for exam venue
+document.addEventListener("DOMContentLoaded", function () {
+  const dropdownButton = document.querySelector(
+    ".btn-outline-primary.dropdown-toggle"
+  );
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const clearButton = document.querySelector(".btn-success"); // Select the Clear button
+
+  function updateVenue(venue) {
+    dropdownButton.textContent = venue || "Select an Exam Venue"; // Default text if no venue
+    const url = new URL(window.location.href);
+    if (venue) {
+      url.searchParams.set("exam_venue", venue);
+    } else {
+      url.searchParams.delete("exam_venue"); // Remove exam_venue parameter
+    }
+    window.location.href = url.toString();
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialVenue = urlParams.get("exam_venue");
+  if (initialVenue) {
+    dropdownButton.textContent = initialVenue;
+  }
+
+  dropdownItems.forEach((item) => {
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+      const selectedVenue = this.textContent;
+      updateVenue(selectedVenue);
+    });
+  });
+
+  // Add click event listener to the Clear button
+  clearButton.addEventListener("click", function (e) {
+    e.preventDefault();
+    updateVenue(null); // Pass null to clear the venue
+  });
+});

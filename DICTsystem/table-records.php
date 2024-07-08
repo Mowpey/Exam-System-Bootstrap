@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Application Records</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
@@ -25,6 +26,11 @@
     ></script>
     <script src="main-script.js"></script>
     <style>
+      .dropdown-item.selected {
+        background-color: #e9ecef;
+        font-weight: bold;
+        }
+
         .delete-column,
         .sticky-id,
         .sticky-name {
@@ -80,25 +86,25 @@
           opacity: 0;
           pointer-events:none;
         }
+
+        .hide{
+    display: none;
+      }
+
+      table {
+        border: 2px solid ;
+      }
     </style>
 
   </head>
   <body>
-<<<<<<< Updated upstream
 
-=======
-    <!-- Includes the necessary PHP files so the code could function-->
->>>>>>> Stashed changes
     <?php include_once('first-connection.php'); ?>
     <?php include('fetch-scores.php');?>
     <?php include('filter-search.php');?>
    
-<<<<<<< Updated upstream
-
-=======
     <!-- All the Filters are applied here in the nav bar-->
->>>>>>> Stashed changes
-      <nav class="navbar bg-body-tertiary fixed-top">
+    <nav class="navbar bg-body-tertiary fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="#"></a>
           <button
@@ -157,8 +163,6 @@
             <span class = "d-block fw-bold">Date of Notification</span>
             <input type="text" name="datefilter_notification" value="" />
 
-<<<<<<< Updated upstream
-=======
             <span class= "d-block fw-bold" >Status</span>
               <form id="statusForm">
                   <div class="form-check">
@@ -186,44 +190,50 @@
                   </div>
               </form>
 
+              <span style="display:block;"><b>Exam Venue </b></span>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Select an Exam Venue
+                    </button>
+                    <button type="button" class="btn btn-success mx-3">Clear</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="?exam_venue=Cagayan">Cagayan</a></li>
+                        <li><a class="dropdown-item" href="?exam_venue=Isabela">Isabela</a></li>
+                        <li><a class="dropdown-item" href="?exam_venue=Nueva Vizcaya">Nueva Vizcaya</a></li>
+                        <li><a class="dropdown-item" href="?exam_venue=Ilagan">Ilagan</a></li>
+                        <li><a class="dropdown-item" href="?exam_venue=Echague">Echague</a></li>
+                        <li><a class="dropdown-item" href="?exam_venue=Quirino">Quirino</a></li>
+                    </ul>
+                </div>
 
->>>>>>> Stashed changes
 
             </div>
           </div>
         </div>
       </nav>
 
-<<<<<<< Updated upstream
     <div class="container" id="header">
       <h1>Applicant Records</h1>
     </div>
-=======
-    <!-- Here is the title of the table-->
-    <div class="container" id="header">
-      <h1>Applicant Records</h1>
-    </div>
-    <!-- This is the part of the search function-->
->>>>>>> Stashed changes
     <div class="container my-3">
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between my-4">
         <form class="d-flex" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
               <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         <div >
-          <button type="button" class="btn btn-primary mx-1"><i class="bi bi-plus-lg"></i></button>
+          <?php  include('addmodal.php'); 
+                 include('dispaymodal.php'); 
+                 include('editmodal.php');
+                 include('deletemodal.php');
+                 ?>
+          <button  data-toggle="modal" data-target="#addApplicantModal" type="button" class="btn btn-primary mx-1" ><i class="bi bi-plus-lg"></i></button>
         </div>
       </div>
     </div>
-<<<<<<< Updated upstream
-=======
-
-    <!-- These are the code for the table as it displays to the screen-->
->>>>>>> Stashed changes
-    <div class="container">
+    <div class="container px-0">
       <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table table-hover"> 
                 <thead>
                 <tr class="table-primary">
                   <th scope="col" class="delete-column"></th>
@@ -234,85 +244,115 @@
                   <th scope="col">Date of Examination</th>
                   <th scope="col">Exam Venue</th>
                   <th scope="col">Date of Notification</th>
-                  <th scope="col" colspan="4" class="text-center">Score</th>
+                  <th class= "hide" scope="col" colspan="4" class="text-center">Score</th>
                   <th scope="col">Proctor</th>
                   <th scope="col">Status</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Contact Number</th>
-                  <th scope="col">Attached Form</th>
+                  <th class= "hide" scope="col">Email</th>
+                  <th class= "hide" scope="col">Contact Number</th>
+                  <th class= "hide" scope="col">Attached Form</th>
                 </tr>
-                <tr class="text-center table-primary">
-                  <th scope="col" class="delete-column"></th>
-                  <th scope="col" class="sticky-id"></th>
-                  <th scope="col" class="sticky-name"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col" class="align-top">Part 1</th>
-                  <th scope="col" class="align-top">Part 2</th>
-                  <th scope="col" class="align-top">Part 3</th>
-                  <th scope="col" class="align-top">Total Score</th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
+                <tr class= "hide" class="text-center table-primary">
+                  <th class= "hide" scope="col" class="delete-column"></th>
+                  <th class= "hide" scope="col" class="sticky-id"></th>
+                  <th class= "hide" scope="col" class="sticky-name"></th>
+                  <th class= "hide" scope="col"></th>
+                  <th class= "hide" scope="col"></th>
+                  <th class= "hide" scope="col"></th>
+                  <th class= "hide" scope="col"></th>
+                  <th class= "hide" scope="col"></th>
+                  <th class= "hide" scope="col" class="align-top">Part 1</th>
+                  <th class= "hide" scope="col" class="align-top">Part 2</th>
+                  <th class= "hide" scope="col" class="align-top">Part 3</th>
+                  <th class= "hide" scope="col" class="align-top">Total Score</th>
+                  <th class= "hide" scope="col"></th>
+                  <th class= "hide" scope="col"></th>
+                  <th class= "hide" scope="col"></th>
+                  <th  class= "hide"scope="col"></th>
+                  <th class= "hide" scope="col"></th>
                 </tr>
               </thead>
 
-              <tbody id="applicant-table-body">
-                <?php if (!empty($applicant_record)): ?>
-                  <?php foreach ($applicant_record as $applicant): ?>
-                    <tr>
-                      <td class="delete-column">
+        <tbody id = "applicant-table-body">
+            <?php if (!empty($applicant_record)): ?>
+            <?php foreach ($applicant_record as $applicant): ?>
+                <?php $hasApplicationForm = !empty($applicant['application_form']); ?>
+                <tr data-applicant-id="<?= $applicant['applicantID'] ?>">
+                    <td class="delete-column">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                          <button class="btn btn-danger" type="button"><i class="bi bi-trash"></i></button>
-                          <button class="btn btn-secondary" type="button"><i class="bi bi-pencil-square text-white"></i></button>
+                            <button onclick="deletexid(<?php echo $applicant['applicantID'] ?>)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteApplicantModal" data-applicantid="<?php echo $applicant['applicantID']; ?>">
+                                <i class="bi bi-trash"></i>
+                            </button>
+
+                            <button class="btn btn-secondary edit-applicant-btn" type="button"
+                                    data-toggle="modal" data-target="#editApplicantModal"
+                                    data-id="<?php echo $applicant['applicantID']; ?>"
+                                    data-name="<?php echo htmlspecialchars($applicant['name']); ?>"
+                                    data-sex="<?php echo htmlspecialchars($applicant['sex']); ?>"
+                                    data-province="<?php echo htmlspecialchars($applicant['province']); ?>"
+                                    data-contact="<?php echo htmlspecialchars($applicant['contact_number']); ?>"
+                                    data-email="<?php echo htmlspecialchars($applicant['email_address']); ?>"
+                                    data-notification="<?php echo htmlspecialchars($applicant['date_of_notification']); ?>"
+                                    data-exam-date="<?php echo htmlspecialchars($applicant['date_of_examination']); ?>"
+                                    data-exam-venue="<?php echo htmlspecialchars($applicant['exam_venue']); ?>"
+                                    data-proctor="<?php echo htmlspecialchars($applicant['proctor']); ?>"
+                                    data-status="<?php echo htmlspecialchars($applicant['status']); ?>"
+                                    <?php if (isset($scores[$applicant['applicantID']])): ?>
+                                        <?php $score = $scores[$applicant['applicantID']]; ?>
+                                        data-score1="<?php echo htmlspecialchars($score['score1']); ?>"
+                                        data-score2="<?php echo htmlspecialchars($score['score2']); ?>"
+                                        data-score3="<?php echo htmlspecialchars($score['score3']); ?>"
+                                        data-total="<?php echo htmlspecialchars($score['total']); ?>"
+                                    <?php else: ?>
+                                        data-score1=""
+                                        data-score2=""
+                                        data-score3=""
+                                        data-total=""
+                                    <?php endif; ?>
+                                    data-application-form="<?php echo !empty($applicant['application_form']); ?>">
+                                <i class="bi bi-pencil-square text-white"></i>
+                            </button>
                         </div>
-                      </td>
-                      <td class="sticky-id"><?= htmlspecialchars($applicant['applicantID']) ?></td>
-                      <td class="sticky-name"><?= htmlspecialchars($applicant['name']) ?></td>
-                      <td><?= htmlspecialchars($applicant['sex']) ?></td>
-                      <td><?= htmlspecialchars($applicant['province']) ?></td>
-                      <td><?= htmlspecialchars((new DateTime($applicant['date_of_examination']))->format('M d Y')) ?></td>
-                      <td><?= htmlspecialchars($applicant['exam_venue']) ?></td>
-                      <td><?= htmlspecialchars((new DateTime($applicant['date_of_notification']))->format('M d Y')) ?></td>
-                      
-                      <?php if (isset($scores[$applicant['applicantID']])): ?>
+                    </td>
+                    <td class="sticky-id applicant-id" ><?= htmlspecialchars($applicant['applicantID']) ?></td>
+                    <td class="sticky-name applicant-name">
+                        <?= htmlspecialchars($applicant['name']) ?>
+                    </td>
+                    <td class= "applicant-sex"              ><?= htmlspecialchars($applicant['sex']) ?></td>
+                    <td class= "applicant-province"         ><?= htmlspecialchars($applicant['province']) ?></td>
+                    <td class= "applicant-exam-date"        ><?= htmlspecialchars((new DateTime($applicant['date_of_examination']))->format('M d Y')) ?></td>
+                    <td class= "applicant-exam-venue"       ><?= htmlspecialchars($applicant['exam_venue']) ?></td>
+                    <td class= "applicant-notification-date"><?= htmlspecialchars((new DateTime($applicant['date_of_notification']))->format('M d Y')) ?></td>
+
+                    <?php if (isset($scores[$applicant['applicantID']])): ?>
                         <?php $score = $scores[$applicant['applicantID']]; ?>
-                        <td class="score"><?= htmlspecialchars($score['score1']) ?></td>
-                        <td class="score"><?= htmlspecialchars($score['score2']) ?></td>
-                        <td class="score"><?= htmlspecialchars($score['score3']) ?></td>
-                        <td class="score"><?= htmlspecialchars($score['total']) ?></td>
-                      <?php else: ?>
+                        <td class="score applicant-score1 hide"><?= htmlspecialchars($score['score1']) ?></td>
+                        <td class="score applicant-score2 hide"><?= htmlspecialchars($score['score2']) ?></td>
+                        <td class="score applicant-score3 hide"><?= htmlspecialchars($score['score3']) ?></td>
+                        <td class="score total-score hide" ><?= htmlspecialchars($score['total']) ?></td>
+                    <?php else: ?>
                         <td colspan="4">No scores found</td>
-                      <?php endif; ?>
-                      
-                      <td><?= htmlspecialchars($applicant['proctor']) ?></td>
-                      <td><?= htmlspecialchars($applicant['status']) ?></td>
-                      <td><a href="mailto:<?= htmlspecialchars($applicant['email_address']) ?>"><?= htmlspecialchars($applicant['email_address']) ?></a></td>
-                      <td><?= htmlspecialchars($applicant['contact_number']) ?></td>
-                      <td><a target="_blank" href="applicant-form.php?id=<?= $applicant['applicantID'] ?>">attachment</a></td>
-                    </tr>
-              <?php endforeach; ?>
+                    <?php endif; ?>
+
+                    <td class="proctor"       ><?= htmlspecialchars($applicant['proctor']) ?></td>
+                    <td class="status"        ><?= htmlspecialchars($applicant['status']) ?></td>
+                    <td class="email-address hide"><a href="mailto:<?= htmlspecialchars($applicant['email_address']) ?>"><?= htmlspecialchars($applicant['email_address']) ?></a></td>
+                    <td class="contact-number hide"> <?= htmlspecialchars($applicant['contact_number']) ?></td>
+                    <td class= "attachment hide" ><a target="_blank" href="applicant-form.php?id=<?= $applicant['applicantID'] ?>">attachment</a></td>
+                </tr>
+            <?php endforeach; ?>
             <?php else: ?>
-              <tr>
-                     <td class="delete-column">
+                <tr>
+                    <td class="delete-column">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                              <button class="btn btn-danger invisible" type="button" disabled><i class="bi bi-trash"></i></button>
-                              <button class="btn btn-secondary invisible" type="button" disabled><i class="bi bi-pencil-square text-white"></i></button>
+                            <button class="btn btn-danger invisible" type="button" disabled><i class="bi bi-trash"></i></button>
+                            <button class="btn btn-secondary invisible" type="button" disabled><i class="bi bi-pencil-square text-white"></i></button>
                         </div>
-                      </td>
-                  <td colspan="16" class="text-center">No records found.</td>
-             </tr>
+                    </td>
+                    <td colspan="16" class="text-center">No records found.</td>
+                </tr>
             <?php endif; ?>
-          </tbody>
-        </table>
-      </div>
-      <button type="button" class="btn btn-success float-end my-2">Save</button>
-    </div>
-    
+        </tbody>
+       </table>
+
   </body>
 </html>
