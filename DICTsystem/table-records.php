@@ -84,12 +84,20 @@
 
   </head>
   <body>
+<<<<<<< Updated upstream
 
+=======
+    <!-- Includes the necessary PHP files so the code could function-->
+>>>>>>> Stashed changes
     <?php include_once('first-connection.php'); ?>
     <?php include('fetch-scores.php');?>
     <?php include('filter-search.php');?>
    
+<<<<<<< Updated upstream
 
+=======
+    <!-- All the Filters are applied here in the nav bar-->
+>>>>>>> Stashed changes
       <nav class="navbar bg-body-tertiary fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="#"></a>
@@ -149,15 +157,54 @@
             <span class = "d-block fw-bold">Date of Notification</span>
             <input type="text" name="datefilter_notification" value="" />
 
+<<<<<<< Updated upstream
+=======
+            <span class= "d-block fw-bold" >Status</span>
+              <form id="statusForm">
+                  <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="Passed" id="flexCheckPassed" name="status[]"
+                            <?php echo (isset($_GET['status']) && in_array('Passed', $_GET['status'])) ? 'checked' : ''; ?>>
+                      <label class="form-check-label" for="flexCheckPassed">
+                          Passed
+                      </label>
+                  </div>
+
+                  <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="Failed" id="flexCheckFailed" name="status[]"
+                            <?php echo (isset($_GET['status']) && in_array('Failed', $_GET['status'])) ? 'checked' : ''; ?>>
+                      <label class="form-check-label" for="flexCheckFailed">
+                          Failed
+                      </label>
+                  </div>
+
+                  <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="Pending" id="flexCheckPending" name="status[]"
+                            <?php echo (isset($_GET['status']) && in_array('Pending', $_GET['status'])) ? 'checked' : ''; ?>>
+                      <label class="form-check-label" for="flexCheckPending">
+                          Pending
+                      </label>
+                  </div>
+              </form>
+
+
+>>>>>>> Stashed changes
 
             </div>
           </div>
         </div>
       </nav>
 
+<<<<<<< Updated upstream
     <div class="container" id="header">
       <h1>Applicant Records</h1>
     </div>
+=======
+    <!-- Here is the title of the table-->
+    <div class="container" id="header">
+      <h1>Applicant Records</h1>
+    </div>
+    <!-- This is the part of the search function-->
+>>>>>>> Stashed changes
     <div class="container my-3">
       <div class="d-flex justify-content-between">
         <form class="d-flex" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
@@ -169,6 +216,11 @@
         </div>
       </div>
     </div>
+<<<<<<< Updated upstream
+=======
+
+    <!-- These are the code for the table as it displays to the screen-->
+>>>>>>> Stashed changes
     <div class="container">
       <div class="table-responsive">
         <table class="table table-hover">

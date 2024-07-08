@@ -1,3 +1,8 @@
+<<<<<<< Updated upstream
+=======
+//Apply the colors in respective status
+
+>>>>>>> Stashed changes
 document.addEventListener("DOMContentLoaded", function () {
   const statusCells = document.querySelectorAll(
     ".table.table-hover tbody tr td:nth-last-of-type(4)"
@@ -16,6 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+<<<<<<< Updated upstream
+=======
+//Listen to the toggle of name filter
+>>>>>>> Stashed changes
 document.addEventListener("DOMContentLoaded", function () {
   const descCheckbox = document.getElementById("flexSwitchCheckDesc");
   const ascCheckbox = document.getElementById("flexSwitchCheckAsc");
@@ -43,6 +52,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+<<<<<<< Updated upstream
+=======
+//Listen to the toggle of ID filter
+>>>>>>> Stashed changes
 document.addEventListener("DOMContentLoaded", function () {
   const oldestCheckbox = document.getElementById("flexSwitchCheckOldest");
 
@@ -60,6 +73,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 $(function () {
+<<<<<<< Updated upstream
+=======
+  //Listen to the date filter exam inputs
+>>>>>>> Stashed changes
   $('input[name="datefilter_examination"]').daterangepicker({
     autoUpdateInput: false,
     locale: {
@@ -121,7 +138,11 @@ $(function () {
       start.format("MM/DD/YYYY") + " - " + end.format("MM/DD/YYYY")
     );
   }
+<<<<<<< Updated upstream
 
+=======
+  //Listen to the date filter notification inputs
+>>>>>>> Stashed changes
   $('input[name="datefilter_notification"]').daterangepicker({
     autoUpdateInput: false,
     locale: {
@@ -204,3 +225,103 @@ $(function () {
     }
   });
 });
+<<<<<<< Updated upstream
+=======
+
+document.addEventListener("DOMContentLoaded", function () {
+  let formChanged = false;
+  const statusForm = document.getElementById("statusForm");
+  const nameFilterForm = document.getElementById("nameFilterForm");
+  const idFilterForm = document.getElementById("idFilterForm");
+  const offcanvas = document.getElementById("offcanvasNavbar");
+
+  function handleFormChange() {
+    formChanged = true;
+  }
+
+  function submitForms() {
+    const dateExamination = document.querySelector(
+      'input[name="datefilter_examination"]'
+    ).value;
+    const dateNotification = document.querySelector(
+      'input[name="datefilter_notification"]'
+    ).value;
+    const statusChecked =
+      Array.from(document.querySelectorAll('input[name="status[]"]:checked'))
+        .length > 0;
+
+    if (formChanged) {
+      const formData = new FormData();
+
+      [statusForm, nameFilterForm, idFilterForm].forEach((form) => {
+        for (let pair of new FormData(form).entries()) {
+          if (pair[1] !== "") {
+            formData.append(pair[0], pair[1]);
+          }
+        }
+      });
+
+      if (dateExamination)
+        formData.append(
+          "start_date_examination",
+          moment(dateExamination.split(" - ")[0], "MM/DD/YYYY").format(
+            "YYYY-MM-DD"
+          )
+        );
+      formData.append(
+        "end_date_examination",
+        moment(dateExamination.split(" - ")[1], "MM/DD/YYYY").format(
+          "YYYY-MM-DD"
+        )
+      );
+      if (dateNotification)
+        formData.append(
+          "start_date_notification",
+          moment(dateNotification.split(" - ")[0], "MM/DD/YYYY").format(
+            "YYYY-MM-DD"
+          )
+        );
+      formData.append(
+        "end_date_notification",
+        moment(dateNotification.split(" - ")[1], "MM/DD/YYYY").format(
+          "YYYY-MM-DD"
+        )
+      );
+
+      const searchParams = new URLSearchParams(formData);
+      const newUrl = searchParams.toString()
+        ? window.location.pathname + "?" + searchParams.toString()
+        : window.location.pathname;
+
+      if (window.location.href !== newUrl) {
+        window.location.href = newUrl;
+      }
+
+      formChanged = false;
+    }
+  }
+
+  [statusForm, nameFilterForm, idFilterForm].forEach((form) => {
+    form.addEventListener("change", handleFormChange);
+  });
+
+  document
+    .querySelector('input[name="datefilter_examination"]')
+    .addEventListener("change", handleFormChange);
+  document
+    .querySelector('input[name="datefilter_notification"]')
+    .addEventListener("change", handleFormChange);
+
+  offcanvas.addEventListener("hidden.bs.offcanvas", submitForms);
+  window.addEventListener("beforeunload", submitForms);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const statusValues = urlParams.getAll("status[]");
+  statusValues.forEach((value) => {
+    const checkbox = document.querySelector(
+      `input[name="status[]"][value="${value}"]`
+    );
+    if (checkbox) checkbox.checked = true;
+  });
+});
+>>>>>>> Stashed changes
