@@ -90,7 +90,9 @@
         .hide{
     display: none;
       }
-
+      .applicant-sex {
+        text-transform: capitalize;
+      }
       table {
         border: 2px solid ;
       }
@@ -102,6 +104,12 @@
     <?php include_once('first-connection.php'); ?>
     <?php include('fetch-scores.php');?>
     <?php include('filter-search.php');?>
+    <?php include('addmodal.php'); ?>
+    <?php include('dispaymodal.php'); ?>
+    <?php include('editmodal.php'); ?>
+    <?php include('deletemodal.php'); ?>
+    <?php include('insert.php');?>
+
    
     <!-- All the Filters are applied here in the nav bar-->
     <nav class="navbar bg-body-tertiary fixed-top">
@@ -222,11 +230,6 @@
               <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         <div >
-          <?php  include('addmodal.php'); 
-                 include('dispaymodal.php'); 
-                 include('editmodal.php');
-                 include('deletemodal.php');
-                 ?>
           <button  data-toggle="modal" data-target="#addApplicantModal" type="button" class="btn btn-primary mx-1" ><i class="bi bi-plus-lg"></i></button>
         </div>
       </div>

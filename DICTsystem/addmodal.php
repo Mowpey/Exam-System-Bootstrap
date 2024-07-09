@@ -42,15 +42,15 @@
                                 <div class="col-md-6 section">
                                     <h4 class="section-title"><b>Personal Details</b></h4>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Firstname" required>
-                                        <input type="text" class="form-control my-3" id="mname" name="mname" placeholder="Middlename" required>
-                                        <input type="text" class="form-control" id="lname" name="lname" placeholder="Lastname" required>
+                                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" required>
+                                    <input type="text" class="form-control my-3" id="middlename" name="middlename" placeholder="Middlename">
+                                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" required>
                                     </div>
                                     <div class="form-group">
                                         <select class="form-control" id="sex" name="sex" required>
                                             <option value="">Select Sex</option>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -141,17 +141,13 @@
 
         <script>
                 function calculateTotal() {
-        // Fetch values from input fields
-        let exam1 = parseFloat(document.getElementById('exam1Score').value) || 0;
-        let exam2 = parseFloat(document.getElementById('exam2Score').value) || 0;
-        let exam3 = parseFloat(document.getElementById('exam3Score').value) || 0;
-
-        // Calculate total score
-        let total = exam1 + exam2 + exam3;
-
-        // Update the total score input field
-        document.getElementById('totalScore').value = "Total : "+total.toFixed(); // Adjust decimal places as needed
-    }
+                    let exam1 = parseFloat(document.getElementById('exam1Score').value) || 0;
+                    let exam2 = parseFloat(document.getElementById('exam2Score').value) || 0;
+                    let exam3 = parseFloat(document.getElementById('exam3Score').value) || 0;
+                    let total = exam1 + exam2 + exam3;
+                    document.getElementById('totalScore').value = "Total : " + total.toFixed(2);
+                    document.getElementById('total_score').value = total.toFixed(2);
+                }
             document.addEventListener('DOMContentLoaded', function() {
                 var modal = document.getElementById('applicantModal');
                 modal.addEventListener('show.bs.modal', function() {
