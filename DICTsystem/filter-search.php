@@ -42,7 +42,7 @@ if (isset($_GET['exam_venue']) && !empty($_GET['exam_venue'])) {
 
 if (isset($_GET['search'])) {
     $search = mysqli_real_escape_string($connection, trim($_GET['search']));
-    $conditions[] = "(status LIKE '%$search%' OR applicantID LIKE '%$search%' OR name LIKE '%$search%' OR province LIKE '%$search%')";
+    $conditions[] = "(status LIKE '%$search%' OR applicantID LIKE '%$search%' OR firstname LIKE '%$search%' OR lastname LIKE '%$search%' OR middlename LIKE '%$search%' OR province LIKE '%$search%')";
 }
 
 if (!empty($conditions)) {
@@ -52,7 +52,7 @@ if (!empty($conditions)) {
 $orderByClause = [];
 if (isset($_GET['sortName'])) {
     $sortNameOrder = $_GET['sortName'] === 'desc' ? 'DESC' : 'ASC';
-    $orderByClause[] = "name $sortNameOrder";
+    $orderByClause[] = "firstname $sortNameOrder";
 }
 
 if (isset($_GET['sortID']) && $_GET['sortID'] === 'oldest') {
@@ -61,7 +61,25 @@ if (isset($_GET['sortID']) && $_GET['sortID'] === 'oldest') {
     $orderByClause[] = "applicantID $sortIDOrder";
 }
 
+$limit = 2; 
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+$total_records_result = mysqli_query($connection, "SELECT COUNT(*) AS total FROM applicantrecord");
+$total_records_row = mysqli_fetch_assoc($total_records_result);
+$total_records = $total_records_row['total'];
+
+$total_pages = ceil($total_records / $limit);
+
+
+if ($page < 1) {
+    $page = 1;
+} elseif ($page > $total_pages) {
+    $page = $total_pages;
+}
+
 $query .= " ORDER BY " . implode(', ', $orderByClause);
+$query .= " LIMIT $limit OFFSET $offset";
 
 $result = mysqli_query($connection, $query);
 

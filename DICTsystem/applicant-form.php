@@ -1,5 +1,4 @@
 <?php 
-
 $conn = new PDO("mysql:host=localhost;dbname=applicant-records", "root", "");
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -12,3 +11,4 @@ $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 header('Content-Type: application/pdf');
 echo $result['applicant_form'];
+?>

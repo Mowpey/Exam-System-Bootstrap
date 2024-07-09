@@ -286,7 +286,9 @@
                             <button class="btn btn-secondary edit-applicant-btn" type="button"
                                     data-toggle="modal" data-target="#editApplicantModal"
                                     data-id="<?php echo $applicant['applicantID']; ?>"
-                                    data-name="<?php echo htmlspecialchars($applicant['name']); ?>"
+                                    data-fname="<?php echo htmlspecialchars($applicant['firstname']); ?>"
+                                    data-mname="<?php echo htmlspecialchars($applicant['middlename']); ?>"
+                                    data-lname="<?php echo htmlspecialchars($applicant['lastname']); ?>"
                                     data-sex="<?php echo htmlspecialchars($applicant['sex']); ?>"
                                     data-province="<?php echo htmlspecialchars($applicant['province']); ?>"
                                     data-contact="<?php echo htmlspecialchars($applicant['contact_number']); ?>"
@@ -315,7 +317,8 @@
                     </td>
                     <td class="sticky-id applicant-id" ><?= htmlspecialchars($applicant['applicantID']) ?></td>
                     <td class="sticky-name applicant-name">
-                        <?= htmlspecialchars($applicant['name']) ?>
+                      <?php ?>
+                        <?= htmlspecialchars($applicant['firstname'].' '.$applicant['middlename'][0].'. '.$applicant['lastname']) ?>
                     </td>
                     <td class= "applicant-sex"              ><?= htmlspecialchars($applicant['sex']) ?></td>
                     <td class= "applicant-province"         ><?= htmlspecialchars($applicant['province']) ?></td>
@@ -353,6 +356,22 @@
             <?php endif; ?>
         </tbody>
        </table>
+
+       <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-md-center">
+            <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+              <a class="page-link" href="<?= $page <= 1 ? '#' : '?' . http_build_query(array_merge($_GET, ['page' => $page - 1])) ?>">Previous</a>
+            </li>
+            <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+              <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>"><?= $i ?></a>
+              </li>
+            <?php endfor; ?>
+            <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
+              <a class="page-link" href="<?= $page >= $total_pages ? '#' : '?' . http_build_query(array_merge($_GET, ['page' => $page + 1])) ?>">Next</a>
+            </li>
+          </ul>
+        </nav>
 
   </body>
 </html>

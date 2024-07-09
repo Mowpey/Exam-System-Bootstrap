@@ -26,7 +26,9 @@
                         <div class="col-md-6 section">
                             <h4 class="section-title"><b>Personal Details</b></h4>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="edit-name" name="edit-name" placeholder="Name" required>
+                                <input type="text" class="form-control" id="edit-fname" name="edit-fname" placeholder="Firstname" required>
+                                <input type="text" class="form-control my-3" id="edit-mname" name="edit-mname" placeholder="Middlename" required>
+                                <input type="text" class="form-control" id="edit-lname" name="edit-lname" placeholder="Lastname" required>
                             </div>
                             <div class="form-group">
                                 <select class="form-control" id="edit-sex" name="edit-sex" required>
@@ -99,11 +101,11 @@
                         <div class="col-md-6 section">
                             <h4 class="section-title"><b>Attached File</b></h4>
                             <div class="form-group">
-                                <input type="file" class="form-control-file" id="edit-applicantForm" name="edit-applicantForm" accept=".pdf">
-                            </div>
-                            <div class="form-group">
-                                <input type="hidden" class="form-control" id="edit-fileName" name="edit-fileName" placeholder="File Name">
-                            </div>
+    <p><strong>Application Form:</strong> 
+        <a id="current-applicantForm" href="#" onclick="viewApplicationForm(event)">View Attachment</a>
+    </p>
+    <input type="file" class="form-control-file" id="edit-applicantForm" name="edit-applicantForm" accept=".pdf">
+</div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -122,11 +124,12 @@
 
 </body>
 </html>
-<script>
-    function editApplicant(id, name, sex, province, contactNumber, emailAddress, notificationDate, examDate, examVenue, proctor, status, score1, score2, score3, totalScore, applicationForm) {
-        
+<!-- <script>
+function editApplicant(id, fname,mname,lname, sex, province, contactNumber, emailAddress, notificationDate, examDate, examVenue, proctor, status, score1, score2, score3, totalScore, applicationForm) {
     document.getElementById('edit-applicantID').value = id;
-    document.getElementById('edit-name').value = name;
+    document.getElementById('fname').value = fname;
+    document.getElementById('mname').value = mname;
+    document.getElementById('lname').value = lname;
     document.getElementById('edit-sex').value = sex;
     document.getElementById('edit-province').value = province;
     document.getElementById('edit-contactNumber').value = contactNumber;
@@ -143,7 +146,7 @@
 
     // Handle application form display or processing (e.g., displaying a link)
     var attachmentLink = document.getElementById('edit-attachmentLink');
-    if (applicationForm) {
+    if (applicationForm && applicationForm !== '#') { // Ensure applicationForm is not null or '#'
         attachmentLink.href = 'applicant-form.php?id=' + id; // Assuming you have a link structure like this
         attachmentLink.textContent = 'View Attachment'; // Change text as needed
     } else {
@@ -151,7 +154,8 @@
         attachmentLink.textContent = 'No Attachment'; // Adjust text accordingly
     }
 }
-</script>
+
+</script> -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var editButtons = document.querySelectorAll('.edit-applicant-btn');
@@ -183,7 +187,9 @@
         btn.addEventListener('click', function () {
             // Get data attributes from the button
             var id = btn.getAttribute('data-id');
-            var name = btn.getAttribute('data-name');
+            var fname = btn.getAttribute('data-fname');
+            var mname = btn.getAttribute('data-mname');
+            var lname = btn.getAttribute('data-lname');
             var sex = btn.getAttribute('data-sex');
             var province = btn.getAttribute('data-province');
             var contactNumber = btn.getAttribute('data-contact');
@@ -200,8 +206,11 @@
             var hasApplicationForm = btn.getAttribute('data-application-form') === 'true';
 
             // Populate modal fields with data
+            //------------------Modify here
             document.getElementById('edit-applicantID').value = id;
-            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-fname').value = fname;
+            document.getElementById('edit-mname').value = mname;
+            document.getElementById('edit-lname').value = lname;
             document.getElementById('edit-sex').value = sex;
             document.getElementById('edit-province').value = province;
             document.getElementById('edit-contactNumber').value = contactNumber;
@@ -221,11 +230,45 @@
             if (hasApplicationForm) {
                 applicationFormIframe.src = 'applicant-form.php?id=' + id; // Assuming you have a link structure like this
                 applicationFormIframe.style.display = 'block';
+                
+                
             } else {
                 applicationFormIframe.src = ''; // Clear the iframe src
                 applicationFormIframe.style.display = 'none';
+                alert("1 record deleted");
             }
         });
     });
 });
+
+function viewApplicationForm(event) {
+    event.preventDefault();
+    var applicantId = document.getElementById('edit-applicantID').value;
+    if (applicantId) {
+        var url = 'applicant-form.php?id=' + encodeURIComponent(applicantId);
+        window.open(url, '_blank');
+    } else {
+        alert('No application form available.');
+    }
+}
+
+var id = btn.getAttribute('data-id');
+            var hasApplicationForm = btn.getAttribute('data-application-form') === 'true';
+
+            // ... existing code to populate other fields ...
+
+            // Update the application form link visibility
+            var currentApplicantFormLink = document.getElementById('current-applicantForm');
+            if (hasApplicationForm) {
+                currentApplicantFormLink.style.display = 'inline';
+                currentApplicantFormLink.textContent = 'View Attachment';
+            } else {
+                currentApplicantFormLink.style.display = 'none';
+                currentApplicantFormLink.textContent = 'No Attachment';
+            }
+
+            // Set the applicant ID in the hidden input
+            document.getElementById('edit-applicantID').value = id;
+
+
 </script>
