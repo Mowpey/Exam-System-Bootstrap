@@ -10,30 +10,11 @@ if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-<<<<<<< Updated upstream
-$sortIDOrder = isset($_GET['sortID']) && $_GET['sortID'] === 'oldest' ? 'ASC' : 'DESC'; 
-
-=======
 $sortIDOrder = isset($_GET['sortID']) && $_GET['sortID'] === 'oldest' ? 'ASC' : 'DESC';
->>>>>>> Stashed changes
 $query = "SELECT * FROM applicantrecord";
 $conditions = [];
 
 if (isset($_GET['start_date_examination']) && isset($_GET['end_date_examination'])) {
-<<<<<<< Updated upstream
-    $start_date_examination = $_GET['start_date_examination'];
-    $end_date_examination = $_GET['end_date_examination'];
-    $conditions[] = "date_of_examination BETWEEN '$start_date_examination' AND '$end_date_examination'";
-}
-elseif (isset($_GET['start_date_notification']) && isset($_GET['end_date_notification'])) {
-    $start_date_notification = $_GET['start_date_notification'];
-    $end_date_notification = $_GET['end_date_notification'];
-    $conditions[] = "date_of_notification BETWEEN '$start_date_notification' AND '$end_date_notification'";
-}
-
-if (isset($_GET['search'])) {
-    $search = trim($_GET['search']);
-=======
     $start_date_examination = mysqli_real_escape_string($connection, $_GET['start_date_examination']);
     $end_date_examination = mysqli_real_escape_string($connection, $_GET['end_date_examination']);
     $conditions[] = "date_of_examination BETWEEN '$start_date_examination' AND '$end_date_examination'";
@@ -53,10 +34,15 @@ if (isset($_GET['status']) && !empty($_GET['status'])) {
     $conditions[] = $statusCondition;
 }
 
+
+if (isset($_GET['exam_venue']) && !empty($_GET['exam_venue'])) {
+    $exam_venue = mysqli_real_escape_string($connection, $_GET['exam_venue']);
+    $conditions[] = "exam_venue = '$exam_venue'";
+}
+
 if (isset($_GET['search'])) {
     $search = mysqli_real_escape_string($connection, trim($_GET['search']));
->>>>>>> Stashed changes
-    $conditions[] = "(status LIKE '%$search%' OR applicantID LIKE '%$search%' OR name LIKE '%$search%' OR province LIKE '%$search%')";
+    $conditions[] = "(status LIKE '%$search%' OR applicantID LIKE '%$search%' OR firstname LIKE '%$search%' OR lastname LIKE '%$search%' OR middlename LIKE '%$search%' OR province LIKE '%$search%')";
 }
 
 if (!empty($conditions)) {
@@ -66,20 +52,34 @@ if (!empty($conditions)) {
 $orderByClause = [];
 if (isset($_GET['sortName'])) {
     $sortNameOrder = $_GET['sortName'] === 'desc' ? 'DESC' : 'ASC';
-    $orderByClause[] = "name $sortNameOrder";
+    $orderByClause[] = "firstname $sortNameOrder";
 }
 
 if (isset($_GET['sortID']) && $_GET['sortID'] === 'oldest') {
     $orderByClause[] = "applicantID ASC";
 } else {
-<<<<<<< Updated upstream
-    $orderByClause[] = "applicantID $sortIDOrder"; 
-=======
     $orderByClause[] = "applicantID $sortIDOrder";
->>>>>>> Stashed changes
+}
+
+$limit = 25; 
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+$total_records_result = mysqli_query($connection, "SELECT COUNT(*) AS total FROM applicantrecord");
+$total_records_row = mysqli_fetch_assoc($total_records_result);
+$total_records = $total_records_row['total'];
+
+$total_pages = ceil($total_records / $limit);
+
+
+if ($page < 1) {
+    $page = 1;
+} elseif ($page > $total_pages) {
+    $page = $total_pages;
 }
 
 $query .= " ORDER BY " . implode(', ', $orderByClause);
+$query .= " LIMIT $limit OFFSET $offset";
 
 $result = mysqli_query($connection, $query);
 
@@ -90,7 +90,3 @@ if ($result) {
 }
 
 mysqli_close($connection);
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
