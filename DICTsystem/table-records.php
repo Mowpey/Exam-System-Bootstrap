@@ -135,6 +135,7 @@
           >
             <div class="offcanvas-header">
               <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
+              <button type="button" class="btn btn-success mx-3" id="statusClearBtn">Clear All</button>
               <button
                 type="button"
                 class="btn-close"
@@ -173,34 +174,7 @@
             <span class = "d-block fw-bold">Date of Notification</span>
             <input type="text" name="datefilter_notification" value="" />
 
-            <!-- <span class= "d-block fw-bold" >Status <button type="button" class="btn btn-success mx-3">Clear</button></span>
-              <form id="statusForm">
-                  <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="Passed" id="flexCheckPassed" name="status[]"
-                            <?php //echo (isset($_GET['status']) && in_array('Passed', $_GET['status'])) ? 'checked' : ''; ?>>
-                      <label class="form-check-label" for="flexCheckPassed">
-                          Passed
-                      </label>
-                  </div>
-
-                  <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="Failed" id="flexCheckFailed" name="status[]"
-                            <?php //echo (isset($_GET['status']) && in_array('Failed', $_GET['status'])) ? 'checked' : ''; ?>>
-                      <label class="form-check-label" for="flexCheckFailed">
-                          Failed
-                      </label>
-                  </div>
-
-                  <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="Pending" id="flexCheckPending" name="status[]"
-                            <?php //echo (isset($_GET['status']) && in_array('Pending', $_GET['status'])) ? 'checked' : ''; ?>>
-                      <label class="form-check-label" for="flexCheckPending">
-                          Pending
-                      </label>
-                  </div>
-              </form> -->
-
-              <span class="d-block fw-bold">Status <button type="button" class="btn btn-success mx-3" id="statusClearBtn">Clear</button></span>
+              <span class="d-block fw-bold">Status</span>
                 <form id="statusForm">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="Passed" id="flexCheckPassed" name="status[]"
@@ -227,28 +201,13 @@
                     </div>
                 </form>
 
-              <!-- <span style="display:block;"><b>Exam Venue </b></span>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Select an Exam Venue
-                    </button>
-                    <button type="button" class="btn btn-success mx-3">Clear</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="?exam_venue=Cagayan">Cagayan</a></li>
-                        <li><a class="dropdown-item" href="?exam_venue=Isabela">Isabela</a></li>
-                        <li><a class="dropdown-item" href="?exam_venue=Nueva Vizcaya">Nueva Vizcaya</a></li>
-                        <li><a class="dropdown-item" href="?exam_venue=Ilagan">Ilagan</a></li>
-                        <li><a class="dropdown-item" href="?exam_venue=Echague">Echague</a></li>
-                        <li><a class="dropdown-item" href="?exam_venue=Quirino">Quirino</a></li>
-                    </ul>
-                </div> -->
 
                 <span style="display:block;"><b>Exam Venue </b></span>
                 <div class="btn-group">
                     <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="examVenueDropdown">
                         Select an Exam Venue
                     </button>
-                    <button type="button" class="btn btn-success mx-3" id="examVenueClearBtn">Clear</button>
+      
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" data-value="Cagayan">Cagayan</a></li>
                         <li><a class="dropdown-item" data-value="Isabela">Isabela</a></li>
