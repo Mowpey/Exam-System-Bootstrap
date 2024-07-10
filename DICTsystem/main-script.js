@@ -416,35 +416,34 @@ document.addEventListener("DOMContentLoaded", function () {
     history.pushState({}, "", url.toString());
   });
 
-  //shows the dropdown items and execute the dropdown functions
   const examVenueClearBtn = document.getElementById("examVenueClearBtn");
   const examVenueDropdown = document.getElementById("examVenueDropdown");
-  const dropdownItems = document.querySelectorAll(".dropdown-item");
+  const dropdownItems = document.querySelectorAll(
+    ".dropdown-menu .dropdown-item"
+  );
 
-  if (examVenueClearBtn && examVenueDropdown) {
+  if (examVenueClearBtn) {
     examVenueClearBtn.addEventListener("click", function (event) {
       event.preventDefault();
       examVenueDropdown.textContent = "Select an Exam Venue";
-
       const url = new URL(window.location.href);
       url.searchParams.delete("exam_venue");
       history.pushState({}, "", url.toString());
     });
-
-    dropdownItems.forEach((item) => {
-      item.addEventListener("click", function (event) {
-        event.preventDefault();
-        const selectedVenue = this.getAttribute("data-value");
-        examVenueDropdown.textContent = selectedVenue;
-
-        const url = new URL(window.location.href);
-        url.searchParams.set("exam_venue", selectedVenue);
-        history.pushState({}, "", url.toString());
-      });
-    });
   }
 
-  //Gets the selected dropdown option
+  dropdownItems.forEach((item) => {
+    item.addEventListener("click", function (event) {
+      event.preventDefault();
+      const selectedVenue = this.getAttribute("data-value");
+      examVenueDropdown.textContent = selectedVenue;
+      const url = new URL(window.location.href);
+      url.searchParams.set("exam_venue", selectedVenue);
+      history.pushState({}, "", url.toString());
+    });
+  });
+
+  // Gets the selected dropdown option
   const urlParams = new URLSearchParams(window.location.search);
   const examVenue = urlParams.get("exam_venue");
   if (examVenue && examVenueDropdown) {
@@ -471,54 +470,43 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-//Automatically refreshes the page
+// Automatically refreshes the page
 document.addEventListener("DOMContentLoaded", function () {
   const offcanvasNavbar = document.querySelector("#offcanvasNavbar");
+  offcanvasNavbar.addEventListener(
+    "hidden.bs.offcanvas",
+    handleOffcanvasHidden
+  );
 
-  offcanvasNavbar.addEventListener("hidden.bs.offcanvas", function () {
+  // Add event listener to the close button (X mark)
+  document.querySelectorAll(".btn-close").forEach((btn) => {
+    btn.addEventListener("click", handleOffcanvasHidden);
+  });
+
+  // Add event listener to the Clear All button
+  const clearAllBtn = document.querySelector("#clearAllBtn");
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener("click", handleClearAll);
+  }
+
+  function handleOffcanvasHidden() {
     const datefilterExamination = document.querySelector(
       'input[name="datefilter_examination"]'
     );
     const datefilterNotification = document.querySelector(
       'input[name="datefilter_notification"]'
     );
-
     if (
       datefilterExamination.value === "" &&
       datefilterNotification.value === ""
     ) {
       clearDateFilters();
     }
-
     // Delay the page reload to allow time for the filters to clear
     setTimeout(() => {
       window.location.reload();
     }, 100);
-  });
-
-  // Add event listener to the close button (X mark)
-  document.querySelectorAll(".btn-close").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const datefilterExamination = document.querySelector(
-        'input[name="datefilter_examination"]'
-      );
-      const datefilterNotification = document.querySelector(
-        'input[name="datefilter_notification"]'
-      );
-
-      if (
-        datefilterExamination.value === "" &&
-        datefilterNotification.value === ""
-      ) {
-        clearDateFilters();
-      }
-
-      // Delay the page reload to allow time for the filters to clear
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
-    });
-  });
+  }
 
   function clearDateFilters() {
     const url = new URL(window.location.href);
@@ -527,5 +515,50 @@ document.addEventListener("DOMContentLoaded", function () {
     url.searchParams.delete("start_date_notification");
     url.searchParams.delete("end_date_notification");
     history.pushState({}, "", url.toString());
+  }
+
+  function handleClearAll() {
+    // Toggle off all active toggles
+    const toggles = document.querySelectorAll(
+      'input[type="checkbox"], input[type="radio"]'
+    );
+    toggles.forEach((toggle) => {
+      if (toggle.checked) {
+        toggle.checked = false;
+        toggle.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+
+    // Clear date filter inputs
+    const dateInputs = document.querySelectorAll(
+      'input[name="datefilter_examination"], input[name="datefilter_notification"]'
+    );
+    dateInputs.forEach((input) => {
+      input.value = "";
+    });
+
+    // Clear dropdown selections
+    const dropdowns = document.querySelectorAll("select");
+    dropdowns.forEach((dropdown) => {
+      dropdown.selectedIndex = 0;
+      dropdown.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+
+    // Reset exam venue dropdown
+    const examVenueDropdown = document.getElementById("examVenueDropdown");
+    if (examVenueDropdown) {
+      examVenueDropdown.textContent = "Select an Exam Venue";
+    }
+
+    // Clear date filters from URL
+    clearDateFilters();
+
+    // Clear all URL parameters
+    const url = new URL(window.location.href);
+    url.search = "";
+    history.pushState({}, "", url.toString());
+
+    // Reload the page to apply changes
+    window.location.reload();
   }
 });

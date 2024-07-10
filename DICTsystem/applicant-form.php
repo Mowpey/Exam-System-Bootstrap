@@ -11,4 +11,3 @@ $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 header('Content-Type: application/pdf');
 echo $result['applicant_form'];
-?>

@@ -135,7 +135,7 @@
           >
             <div class="offcanvas-header">
               <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
-              <button type="button" class="btn btn-success mx-3" id="statusClearBtn">Clear All</button>
+              <button type="button" class="btn btn-success mx-3" id="clearAllBtn">Clear All</button>
               <button
                 type="button"
                 class="btn-close"
