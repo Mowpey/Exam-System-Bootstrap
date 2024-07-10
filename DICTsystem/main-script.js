@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
       statusCell.classList.add("table-info");
     }
   });
-
+  // hotdog ni ken malaki
   //Sorting ID and Name
   const descCheckbox = document.getElementById("flexSwitchCheckDesc");
   const ascCheckbox = document.getElementById("flexSwitchCheckAsc");
