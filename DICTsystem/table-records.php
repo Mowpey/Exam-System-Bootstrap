@@ -126,8 +126,8 @@ try {
         }
 
         .hide{
-    display: none;
-      }
+          display: none;
+        }
       .applicant-sex {
         text-transform: capitalize;
       }
@@ -138,13 +138,8 @@ try {
 
   </head>
   <body>
-<?php
 
-
-?>
-    <?php 
-          
-          include_once('first-connection.php'); ?>
+    <?php include_once('first-connection.php'); ?>
     <?php include('fetch-scores.php');?>
     <?php include('filter-search.php');?>
     <?php include('addmodal.php'); ?>
@@ -244,15 +239,13 @@ try {
 
               <span style="display:block;"><b>Exam Venue </b></span>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-outline-primary dropdown-toggle" id="examVenueDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         Select an Exam Venue
                     </button>
-                    <button type="button" class="btn btn-success mx-3">Clear</button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" >hall-a</a></li>
-                        <li><a class="dropdown-item" >hall-b</a></li>
-                        <li><a class="dropdown-item" >hall-c</a></li>
-
+                        <li><a class="dropdown-item">hall-a</a></li>
+                        <li><a class="dropdown-item">hall-b</a></li>
+                        <li><a class="dropdown-item">hall-c</a></li>
                     </ul>
                 </div>
 
@@ -401,6 +394,7 @@ try {
             <?php endif; ?>
         </tbody>
        </table>
+      </div>
               
        <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-md-center">
@@ -417,9 +411,6 @@ try {
             </li>
           </ul>
         </nav>
-
-        <a href="logout.php">Logout</a>
-        <a href="history.php">History</a>
-
+    </div>
   </body>
 </html>
