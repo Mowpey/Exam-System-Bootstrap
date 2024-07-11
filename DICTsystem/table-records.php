@@ -176,6 +176,7 @@ try {
           >
             <div class="offcanvas-header">
               <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
+              <button type="button" class="btn btn-success mx-3" id="clearAllBtn">Clear All</button>
               <button
                 type="button"
                 class="btn-close"
@@ -251,9 +252,7 @@ try {
                         <li><a class="dropdown-item" >hall-a</a></li>
                         <li><a class="dropdown-item" >hall-b</a></li>
                         <li><a class="dropdown-item" >hall-c</a></li>
-                        <!-- <li><a class="dropdown-item" >Ilagan</a></li>
-                        <li><a class="dropdown-item" >Echague</a></li>
-                        <li><a class="dropdown-item" >Quirino</a></li> -->
+
                     </ul>
                 </div>
 
