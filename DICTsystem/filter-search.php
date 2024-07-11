@@ -61,7 +61,7 @@ if (isset($_GET['sortID']) && $_GET['sortID'] === 'oldest') {
     $orderByClause[] = "applicantID $sortIDOrder";
 }
 
-$limit = 25; 
+$limit = 2; 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 

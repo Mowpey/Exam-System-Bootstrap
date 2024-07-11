@@ -1,3 +1,41 @@
+<?php
+session_start();
+
+// Check if user is not logged in, redirect to login page
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Validate session token against database
+try {
+    $conn = new PDO("mysql:host=localhost;dbname=applicant-records", "root", "");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Retrieve session token from database for current user
+    $stmt = $conn->prepare("SELECT session_token FROM adminaccount WHERE adminID = :adminID");
+    $stmt->bindParam(':adminID', $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Check if session token in database matches session token in $_SESSION
+    if (!$result || $result['session_token'] !== $_SESSION['session_token']) {
+        // Invalid session, destroy session and redirect to login page
+        session_destroy();
+        header("Location: login.php?alert=session_conflict");
+        exit();
+    }
+
+} catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+    exit();
+}
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,8 +64,6 @@
     ></script>
     <script src="main-script.js"></script>
     <style>
-
-
       .dropdown-item.selected {
         background-color: #e9ecef;
         font-weight: bold;
@@ -102,8 +138,13 @@
 
   </head>
   <body>
+<?php
 
-    <?php include_once('first-connection.php'); ?>
+
+?>
+    <?php 
+          
+          include_once('first-connection.php'); ?>
     <?php include('fetch-scores.php');?>
     <?php include('filter-search.php');?>
     <?php include('addmodal.php'); ?>
@@ -173,11 +214,11 @@
             <span class = "d-block fw-bold">Date of Notification</span>
             <input type="text" name="datefilter_notification" value="" />
 
-            <!-- <span class= "d-block fw-bold" >Status <button type="button" class="btn btn-success mx-3">Clear</button></span>
+            <span class= "d-block fw-bold" >Status</span>
               <form id="statusForm">
                   <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="Passed" id="flexCheckPassed" name="status[]"
-                            <?php //echo (isset($_GET['status']) && in_array('Passed', $_GET['status'])) ? 'checked' : ''; ?>>
+                            <?php echo (isset($_GET['status']) && in_array('Passed', $_GET['status'])) ? 'checked' : ''; ?>>
                       <label class="form-check-label" for="flexCheckPassed">
                           Passed
                       </label>
@@ -185,7 +226,7 @@
 
                   <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="Failed" id="flexCheckFailed" name="status[]"
-                            <?php //echo (isset($_GET['status']) && in_array('Failed', $_GET['status'])) ? 'checked' : ''; ?>>
+                            <?php echo (isset($_GET['status']) && in_array('Failed', $_GET['status'])) ? 'checked' : ''; ?>>
                       <label class="form-check-label" for="flexCheckFailed">
                           Failed
                       </label>
@@ -193,69 +234,26 @@
 
                   <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="Pending" id="flexCheckPending" name="status[]"
-                            <?php //echo (isset($_GET['status']) && in_array('Pending', $_GET['status'])) ? 'checked' : ''; ?>>
+                            <?php echo (isset($_GET['status']) && in_array('Pending', $_GET['status'])) ? 'checked' : ''; ?>>
                       <label class="form-check-label" for="flexCheckPending">
                           Pending
                       </label>
                   </div>
-              </form> -->
+              </form>
 
-              <span class="d-block fw-bold">Status <button type="button" class="btn btn-success mx-3" id="statusClearBtn">Clear</button></span>
-                <form id="statusForm">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Passed" id="flexCheckPassed" name="status[]"
-                              <?php echo (isset($_GET['status']) && in_array('Passed', $_GET['status'])) ? 'checked' : ''; ?>>
-                        <label class="form-check-label" for="flexCheckPassed">
-                            Passed
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Failed" id="flexCheckFailed" name="status[]"
-                              <?php echo (isset($_GET['status']) && in_array('Failed', $_GET['status'])) ? 'checked' : ''; ?>>
-                        <label class="form-check-label" for="flexCheckFailed">
-                            Failed
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Pending" id="flexCheckPending" name="status[]"
-                              <?php echo (isset($_GET['status']) && in_array('Pending', $_GET['status'])) ? 'checked' : ''; ?>>
-                        <label class="form-check-label" for="flexCheckPending">
-                            Pending
-                        </label>
-                    </div>
-                </form>
-
-              <!-- <span style="display:block;"><b>Exam Venue </b></span>
+              <span style="display:block;"><b>Exam Venue </b></span>
                 <div class="btn-group">
                     <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Select an Exam Venue
                     </button>
                     <button type="button" class="btn btn-success mx-3">Clear</button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="?exam_venue=Cagayan">Cagayan</a></li>
-                        <li><a class="dropdown-item" href="?exam_venue=Isabela">Isabela</a></li>
-                        <li><a class="dropdown-item" href="?exam_venue=Nueva Vizcaya">Nueva Vizcaya</a></li>
-                        <li><a class="dropdown-item" href="?exam_venue=Ilagan">Ilagan</a></li>
-                        <li><a class="dropdown-item" href="?exam_venue=Echague">Echague</a></li>
-                        <li><a class="dropdown-item" href="?exam_venue=Quirino">Quirino</a></li>
-                    </ul>
-                </div> -->
-
-                <span style="display:block;"><b>Exam Venue </b></span>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="examVenueDropdown">
-                        Select an Exam Venue
-                    </button>
-                    <button type="button" class="btn btn-success mx-3" id="examVenueClearBtn">Clear</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" data-value="Cagayan">Cagayan</a></li>
-                        <li><a class="dropdown-item" data-value="Isabela">Isabela</a></li>
-                        <li><a class="dropdown-item" data-value="Nueva Vizcaya">Nueva Vizcaya</a></li>
-                        <li><a class="dropdown-item" data-value="Ilagan">Ilagan</a></li>
-                        <li><a class="dropdown-item" data-value="Echague">Echague</a></li>
-                        <li><a class="dropdown-item" data-value="Quirino">Quirino</a></li>
+                        <li><a class="dropdown-item" >hall-a</a></li>
+                        <li><a class="dropdown-item" >hall-b</a></li>
+                        <li><a class="dropdown-item" >hall-c</a></li>
+                        <!-- <li><a class="dropdown-item" >Ilagan</a></li>
+                        <li><a class="dropdown-item" >Echague</a></li>
+                        <li><a class="dropdown-item" >Quirino</a></li> -->
                     </ul>
                 </div>
 
@@ -265,10 +263,10 @@
         </div>
       </nav>
 
-    <div class="container px-0" id="header">
+    <div class="container" id="header">
       <h1>Applicant Records</h1>
     </div>
-    <div class="container my-3 px-0">
+    <div class="container my-3">
       <div class="d-flex justify-content-between my-4">
         <form class="d-flex" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
@@ -404,7 +402,7 @@
             <?php endif; ?>
         </tbody>
        </table>
-
+              
        <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-md-center">
             <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
@@ -420,6 +418,9 @@
             </li>
           </ul>
         </nav>
+
+        <a href="logout.php">Logout</a>
+        <a href="history.php">History</a>
 
   </body>
 </html>

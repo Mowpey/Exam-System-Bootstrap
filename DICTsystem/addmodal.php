@@ -76,14 +76,20 @@
                                     <h4 class="section-title"><b>Examination Details</b></h4>
                                     <div class="form-group">
                                         <span> <b>Date of Notification</b></span>
-                                        <input type="text" class="form-control" id="notificationDate" name="date_of_notification" placeholder="mm/dd/yyyy" required>
+                                        <input type="text" class="form-control" id="notificationDate" name="date_of_notification" placeholder="mm/dd/yyyy" autocomplete="off" required>
                                     </div>
                                     <div class="form-group">
                                     <span> <b>Date of Examination</b></span>
-                                        <input type="text" class="form-control" id="examDate" name="date_of_examination" placeholder="mm/dd/yyyy" required>
+                                        <input type="text" class="form-control" id="examDate" name="date_of_examination" placeholder="mm/dd/yyyy" autocomplete="off"required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" id="examVenue" name="exam_venue" placeholder="Exam Venue" required>
+
+                                        <select class="form-control" id="examVenue" name="exam_venue" required>
+                                            <option value="">Select Exam Venue</option>
+                                            <option value="hall-a">Hall A</option>
+                                            <option value="hall-b">Hall B</option>
+                                            <option value="hall-c">Hall C</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <input type="text" class="form-control" id="proctorName" name="proctor" placeholder="Proctor" required>
@@ -161,8 +167,8 @@
                     let exam2 = parseFloat(document.getElementById('exam2Score').value) || 0;
                     let exam3 = parseFloat(document.getElementById('exam3Score').value) || 0;
                     let total = exam1 + exam2 + exam3;
-                    document.getElementById('totalScore').value = "Total : " + total.toFixed(2);
-                    document.getElementById('total_score').value = total.toFixed(2);
+                    document.getElementById('totalScore').value = "Total : " + total.toFixed(0);
+                    document.getElementById('total_score').value = total.toFixed(0);
                 }
             document.addEventListener('DOMContentLoaded', function() {
                 var modal = document.getElementById('applicantModal');
